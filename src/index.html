@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; img-src 'self' data:">
+  <title>May Attacker</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+  <div id="homeView">
+    <div class="drag-strip"></div>
+
+    <canvas id="scene" aria-hidden="true"></canvas>
+
+    <div class="stage" id="stage">
+      <h1 class="title" id="title" aria-label="May Attacker"></h1>
+
+      <p class="lede">May May is ready to attack 🐾</p>
+
+      <button class="cta" id="cta" type="button">Get to work</button>
+    </div>
+
+    <div class="stage stage-front" id="stageFront">
+      <header class="top">
+        <a class="logo" href="#" id="logo" aria-label="May Attacker — replay intro">
+          <svg viewBox="0 0 31 27" width="31" height="27" aria-hidden="true">
+            <path fill="#050505" d="M0 0Q4.6 4.4 9.2 2.7Q15.5 -0.8 21.8 2.7Q26.4 4.4 31 0V27Q26.4 22.6 21.8 24.3Q15.5 27.8 9.2 24.3Q4.6 22.6 0 27Z"/>
+            <path fill="#EEECEA" d="M10 9.6Q10.5 13 13.9 13.5Q10.5 14 10 17.4Q9.5 14 6.1 13.5Q9.5 13 10 9.6Z"/>
+            <path fill="#EEECEA" d="M21 9.6Q21.5 13 24.9 13.5Q21.5 14 21 17.4Q20.5 14 17.1 13.5Q20.5 13 21 9.6Z"/>
+          </svg>
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a href="#">Skillset</a>
+          <a href="#">Daily Rhythm</a>
+          <a href="#">Members</a>
+          <a href="#">Story</a>
+          <a href="#">Support</a>
+        </nav>
+      </header>
+
+      <div class="bubble" id="bubble" role="status" aria-live="polite">
+        <span class="bubble-text" id="bubbleText"></span><span class="caret"></span>
+        <svg class="bubble-tail" viewBox="0 0 24 21" width="24" height="21" aria-hidden="true">
+          <path fill="#EEECEA" d="M3 0H21L5 16H3Z"/>
+          <path fill="#050505" d="M0 0H3V15H6V12H9V9H12V6H15V3H18V0H22V3H19V6H16V9H13V12H10V15H7V18H4V21H0Z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div id="chatView" class="chat" hidden>
+    <aside class="side">
+      <button class="brand" id="toHome" type="button" title="Back to May May's home">
+        <span class="brand-mark" id="brandMark"></span>
+      </button>
+      <button class="btn-new" id="newChat" type="button"><span>New chat</span><kbd>⌘N</kbd></button>
+      <div class="side-label"><span>Chats</span><i></i></div>
+      <nav class="chat-list" id="chatList" aria-label="Chats"></nav>
+      <canvas id="balCat" class="bal-cat" aria-hidden="true"></canvas>
+      <div class="balance" id="balance" title="OpenRouter credit — updates automatically">
+        <span class="bal-label">Balance</span>
+        <b id="balAmount">—</b>
+        <button class="bal-refresh" id="balRefresh" type="button" title="Refresh now" aria-label="Refresh balance">⟳</button>
+      </div>
+      <div class="side-foot">
+        <span class="status" id="status"><i></i><b id="statusText">Connecting…</b></span>
+        <button class="btn-line small" id="settingsBtn" type="button" title="Settings (⌘,)">Settings</button>
+      </div>
+    </aside>
+
+    <section class="pane" id="pane">
+      <header class="pane-head">
+        <div class="ph-title">
+          <h2 id="chatTitle">New chat</h2>
+          <div class="ph-chips">
+            <button class="chip-sm" id="provChip" type="button" title="Model for this chat"><i></i><span id="provLabel">…</span><b>▾</b></button>
+            <button class="chip-sm" id="cwdChip" type="button" title="Working folder for terminal commands"><span class="ico">⌂</span><span id="cwdLabel">~</span></button>
+            <button class="chip-sm inv" id="autoChip" type="button" title="Commands run without asking in this chat — click to turn off" hidden>auto-run <b>×</b></button>
+          </div>
+        </div>
+        <div class="ph-field" id="phField" aria-hidden="true"></div>
+      </header>
+
+      <div class="menu" id="provMenu" hidden></div>
+
+      <div class="thread" id="thread">
+        <div class="thread-inner" id="threadInner"></div>
+      </div>
+
+      <div class="skill-pop" id="skillPop" hidden></div>
+      <form class="composer" id="composer" autocomplete="off">
+        <div class="composer-box">
+          <button type="button" class="skills-btn" id="skillsBtn" title="Skills — reusable playbooks (type / )">/</button>
+          <span class="cmd-badge" aria-hidden="true">$</span>
+          <textarea id="input" rows="1" placeholder="Message May May…   / for skills · !command runs in the terminal" aria-label="Message"></textarea>
+          <button type="submit" class="btn-send" id="sendBtn">Send <span>↵</span></button>
+        </div>
+        <p class="composer-hint" id="composerHint">Enter to send · Shift+Enter for a new line · / runs a skill · !cmd runs in the terminal</p>
+      </form>
+
+      <div class="notify" id="notify" role="alert" hidden>
+        <div class="nt-head"><span class="nt-tag" id="ntTag">Reminder</span><span class="nt-time" id="ntTime"></span></div>
+        <p class="nt-text" id="ntText"></p>
+        <div class="nt-actions">
+          <button class="btn-black" id="ntOpen" type="button">Open</button>
+          <button class="btn-line" id="ntOk" type="button">Got it</button>
+        </div>
+      </div>
+
+      <canvas id="chatScene" aria-hidden="true"></canvas>
+    </section>
+
+    <dialog class="dialog wide" id="settingsDialog">
+      <form method="dialog" id="settingsForm">
+        <h3>Settings</h3>
+
+        <section class="set-sec">
+          <h4>OpenRouter <span class="pill" id="orState"></span></h4>
+          <div class="row">
+            <input type="password" id="orKey" placeholder="sk-or-…  OpenRouter API key" spellcheck="false" autocomplete="off">
+            <button class="btn-line small" type="button" id="orSave">Save key</button>
+            <button class="btn-line small" type="button" id="orClear">Remove</button>
+          </div>
+          <div class="row">
+            <label class="field">Model
+              <input list="orModels" id="orModel" spellcheck="false" placeholder="deepseek/deepseek-v4-pro">
+              <datalist id="orModels"></datalist>
+            </label>
+            <label class="field">Effort
+              <select id="orEffort"><option value="low">low</option><option value="medium">medium</option><option value="high">high</option></select>
+            </label>
+            <label class="check"><input type="checkbox" id="orThinking"><span>Reasoning</span></label>
+          </div>
+          <div class="row">
+            <label class="field" style="flex:1">Pin provider <em style="text-transform:none;letter-spacing:0;opacity:.6">(blank = OpenRouter chooses cheapest)</em>
+              <input id="orPin" spellcheck="false" placeholder="streamlake/fp8">
+            </label>
+            <label class="check"><input type="checkbox" id="orFallbacks"><span>Allow fallbacks</span></label>
+          </div>
+          <p class="hint" id="orHint"></p>
+        </section>
+
+        <section class="set-sec" id="skillsSec">
+          <h4>Skills <span class="pill">/name in chat</span></h4>
+          <p class="hint">Reusable playbooks. Type <code>/</code> in the composer to run one. A skill can pin a model, or leave it on the chat's current one.</p>
+          <div class="skill-list" id="skillList"></div>
+          <div class="skill-edit" id="skillEdit" hidden>
+            <div class="row">
+              <label class="field" style="flex:1">Name
+                <input id="skName" maxlength="60" placeholder="Review changes" spellcheck="false">
+              </label>
+              <label class="field">Model
+                <select id="skProvider"><option value="">Chat default</option><option value="openrouter">OpenRouter</option></select>
+              </label>
+            </div>
+            <label class="field">Instruction May May follows
+              <textarea id="skPrompt" rows="3" maxlength="8000" placeholder="Run the tests and fix anything that fails…"></textarea>
+            </label>
+            <div class="row skill-edit-actions">
+              <button class="btn-line small" type="button" id="skDelete">Delete</button>
+              <span style="flex:1"></span>
+              <button class="btn-line small" type="button" id="skCancel">Cancel</button>
+              <button class="btn-black" type="button" id="skSave" style="height:28px">Save skill</button>
+            </div>
+          </div>
+          <button class="btn-line small" type="button" id="skNew">+ New skill</button>
+        </section>
+
+        <section class="set-sec">
+          <h4>Terminal</h4>
+          <div class="seg col" role="radiogroup" aria-label="Command approval">
+            <label><input type="radio" name="tmode" value="ask"><span>Ask before every command</span></label>
+            <label><input type="radio" name="tmode" value="safe"><span>Run read-only commands without asking <em>(ls, cat, grep, git status…)</em></span></label>
+            <label><input type="radio" name="tmode" value="all"><span>Run everything without asking <em>(risky commands still ask)</em></span></label>
+          </div>
+          <div class="row">
+            <span class="field-label">Default folder</span>
+            <code id="defCwd">~</code>
+            <button class="btn-line small" type="button" id="defCwdBtn">Change…</button>
+          </div>
+          <p class="hint">Commands run in <b id="shellName">zsh</b> as you, without a terminal window: no password prompts or stdin. Type <code>!command</code> in the composer to run one yourself — May May sees the result next time.</p>
+        </section>
+
+        <p class="dialog-note" id="setNote"></p>
+        <div class="dialog-actions"><span></span><span></span><span></span><button class="btn-black" value="done" type="submit">Done</button></div>
+      </form>
+    </dialog>
+  </div>
+
+  <div class="wipe" id="wipe" aria-hidden="true"></div>
+
+  <script src="heading.js"></script>
+  <script src="cat/shaders.js"></script>
+  <script src="cat/rig.js"></script>
+  <script src="cat/renderer.js"></script>
+  <script src="app.js"></script>
+  <script src="chat/markdown.js"></script>
+  <script src="chat/chatcat.js"></script>
+  <script src="chat/balancecat.js"></script>
+  <script src="chat/chat.js"></script>
+</body>
+</html>

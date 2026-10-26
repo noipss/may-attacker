@@ -1,0 +1,23 @@
+{
+  "name": "may-attacker",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "env -u ELECTRON_RUN_AS_NODE electron .",
+    "shots": "env -u ELECTRON_RUN_AS_NODE electron . --shots=1.2,2.3,4.3,7.3,9.8,12 --out=shots",
+    "test": "node scripts/test-terminal.js && node scripts/test-agent.js && node scripts/test-skills.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "May Attacker — AI agent desktop app",
+  "devDependencies": {
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "electron": "^33.4.11"
+  },
+  "productName": "May Attacker",
+  "private": true,
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
+    "openai": "^6.49.0"
+  }
+}
